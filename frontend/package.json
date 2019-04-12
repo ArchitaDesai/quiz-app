@@ -1,0 +1,42 @@
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-scripts": "2.1.8"
+  },
+  "__comment__": "'watch' will run buildapp command writeen in 'scripts'",
+  "watch": {
+    "buildapp": {
+      "patterns": [
+        "src",
+        "public"
+      ],
+      "extensions": "js,jsx,html",
+      "runOnChangeOnly": true
+    }
+  },
+  "__comment_npm_watch__": "When we run npm run watch command, it will call npm-watch module which will call buildapp from watch object above, and buildapp will run build.sh",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "buildapp": "../build.sh",
+    "watch": "npm-watch"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "devDependencies": {
+    "npm-watch": "^0.6.0"
+  }
+}
