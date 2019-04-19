@@ -2,12 +2,20 @@ import React from 'react'
 
 function DisplayAnswers(props) {
     return(
-        <div>
+        <span>
             <label>
-                <input type="radio" /> {props.answerValue}
+                <input 
+                    type="radio" 
+                    name="answers" 
+                    value={props.value}
+                    onClick={props.onClick}
+                    id={props.id}
+                /> 
+                
+                { props.answerValue }
             </label>
             <br />
-        </div>
+        </span>
     )
 }
 
