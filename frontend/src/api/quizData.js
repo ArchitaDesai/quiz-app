@@ -1,11 +1,11 @@
-var quizQuestions = [
+var quizData = [
     {
         id: 0,
         question: "Which one of the following is not an OOP language?",
-        answers: [
+        answerOptions: [
             "Java",
             "Python",
-            "C",
+            "JavaScript",
             "Python"
         ],
         correctAnswer: 2,   // index will be 0,1,2,3
@@ -17,7 +17,7 @@ var quizQuestions = [
         
         id: 1,
         question: "Which one of the following is not an OOP language?",
-        answers: [
+        answerOptions: [
             "Java",
             "Python",
             "C",
@@ -31,7 +31,7 @@ var quizQuestions = [
     {
         id: 2,
         question: "Which one of the following is not an OOP language?",
-        answers: [
+        answerOptions: [
             "Java",
             "Python",
             "C",
@@ -45,7 +45,7 @@ var quizQuestions = [
     {
         id: 3,
         question: "Which one of the following is not an OOP language?",
-        answers: [
+        answerOptions: [
             "Java",
             "Python",
             "C",
@@ -59,7 +59,7 @@ var quizQuestions = [
     {
         id: 4,
         question: "Which one of the following is not an OOP language?",
-        answers: [
+        answerOptions: [
             "Java",
             "Python",
             "C",
@@ -73,7 +73,7 @@ var quizQuestions = [
     {
         id: 5,
         question: "Which one of the following is not an OOP language?",
-        answers: [
+        answerOptions: [
             "Java",
             "Python",
             "C",
@@ -87,7 +87,7 @@ var quizQuestions = [
     {
         id: 6,
         question: "Which one of the following is not an OOP language?",
-        answers: [
+        answerOptions: [
             "Java",
             "Python",
             "C",
@@ -101,7 +101,7 @@ var quizQuestions = [
     {
         id: 7,
         question: "Which one of the following is not an OOP language?",
-        answers: [
+        answerOptions: [
             "Java",
             "Python",
             "C",
@@ -115,7 +115,7 @@ var quizQuestions = [
     {
         id: 8,
         question: "Which one of the following is not an OOP language?",
-        answers: [
+        answerOptions: [
             "Java",
             "Python",
             "C",
@@ -129,7 +129,7 @@ var quizQuestions = [
     {
         id: 9,
         question: "Which one of the following is not an OOP language?",
-        answers: [
+        answerOptions: [
             "Java",
             "Python",
             "C",
@@ -142,4 +142,4 @@ var quizQuestions = [
   ];
 
 
-export default quizQuestions;
+export default quizData;

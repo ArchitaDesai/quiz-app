@@ -1,59 +1,63 @@
 import React from 'react';
 
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
-import '../node_modules/bootstrap/dist/js/bootstrap'
+// import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
+// import '../node_modules/bootstrap/dist/js/bootstrap'
 
 import './App.css';
 
-import Answers from './components/Answers';
+import DisplayAnswers from './components/DisplayAnswers';
 
-import TimerMachine from 'react-timer-machine';
-import moment from 'moment';
-import momentDurationFormatSetup from 'moment-duration-format';
+// import TimerMachine from 'react-timer-machine';
+// import moment from 'moment';
+// import momentDurationFormatSetup from 'moment-duration-format';
 
+import quizData from './api/quizData';
 
-momentDurationFormatSetup(moment);
+// momentDurationFormatSetup(moment);
 
 class App extends React.Component {
 
 	constructor() {
-		super()
+		super();
+		
 		this.state = {
-			questionID: -1
-		}
+			questionID: 0, 		// start from 0th question
+			question: '',
+			answerOptions: [],
+			selectedAnswer: -1, // no answer's selected initially
+			score: 0			// no score initially
+		};
+		
+		this.quizLength = quizData.length
+
+		this.goNextQuestion = this.goNextQuestion.bind(this);
 	}
 
+	goNextQuestion() {
+		
+		console.log(this.quizLength);
+		// this.setState((prevState) => {
 
-	render(){
+		// })
+	}
+
+	render() {
+		let questionID = this.state.questionID;
 		return(
-			<TimerMachine
-				timeStart={10 * 1000} // start at 10 seconds
-				started={true}
-				paused={false}
-				countdown={true} // counts down instead of up
-				interval={1000} // tick every 1 second
-				formatTimer={(time, ms) =>
-				moment.duration(ms, "milliseconds").format("h:mm:ss")
-				}
-				onStart={time =>
-				console.info(`Timer started: ${JSON.stringify(time)}`)
-				}
-				onStop={time =>
-				console.info(`Timer stopped: ${JSON.stringify(time)}`)
-				}
-				onTick={time =>
-				console.info(`Timer ticked: ${JSON.stringify(time)}`)
-				}
-				onPause={time =>
-				console.info(`Timer paused: ${JSON.stringify(time)}`)
-				}
-				onResume={time =>
-				console.info(`Timer resumed: ${JSON.stringify(time)}`)
-				}
-				onComplete={time =>
-				console.info(`Timer completed: ${JSON.stringify(time)}`)
-				}
-			/>
+			<div>
+				<h2> {quizData[questionID].question} </h2>
+
+					{
+						// render 4 answers of the current question
+						quizData[questionID].answerOptions.map((answer, key) => {
+							return (
+								<DisplayAnswers key={key} answerValue={answer}/>
+							)
+						})
+					}
+
+				<button onClick={this.goNextQuestion}>Next</button>
+			</div>
 			/* <div>
 				<div className="grid">
 				<div id="quiz">
