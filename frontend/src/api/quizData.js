@@ -1,7 +1,7 @@
 var quizData = [
     {
         id: 0,
-        question: "One Which one of the following is not an OOP language?",
+        question: "Which one of the following is not an OOP language?",
         answerOptions: [
             "A",
             "Python",
@@ -16,7 +16,7 @@ var quizData = [
     {
         
         id: 1,
-        question: "Twi Which one of the following is not an OOP language?",
+        question: "Which one of the following is not an OOP language?",
         answerOptions: [
             "B",
             "Python",
@@ -30,7 +30,7 @@ var quizData = [
 
     {
         id: 2,
-        question: "Three Which one of the following is not an OOP language?",
+        question: "Which one of the following is not an OOP language?",
         answerOptions: [
             "C",
             "Python",
@@ -44,7 +44,7 @@ var quizData = [
 
     {
         id: 3,
-        question: "Four Which one of the following is not an OOP language?",
+        question: "Which one of the following is not an OOP language?",
         answerOptions: [
             "D",
             "Python",
@@ -128,7 +128,7 @@ var quizData = [
 
     {
         id: 9,
-        question: "Nine Which one of the following is not an OOP language?",
+        question: "Which one of the following is not an OOP language?",
         answerOptions: [
             "J",
             "Python",

@@ -16,81 +16,106 @@ import quizData from './api/quizData';
 
 class App extends React.Component {
 
+
+	// answerButtonRef = React.forwardRef();
+
 	constructor() {
 		super();
 		
 		this.state = {
-			questionID: 0, 		// start from 0th question
-			// question: '',
-			// answerOptions: [],
-			selectedAnswer: -1, // no answer's selected initially
-			score: 0			// no score initially
+			questionID: 0, 				// start from 0th question
+			selectedAnswer: -1, 		// no answer's selected initially
+			score: 0,					// no score initially
+			onLastQuestion: false, 		// if it's true then we're on last question
+			willSubmit: false
 		};
 		
 		this.quizLength = quizData.length
 
-		this.goNextQuestion = this.goNextQuestion.bind(this);
+		this.goToNextQuestion = this.goToNextQuestion.bind(this);
 		this.handleAnswerClick = this.handleAnswerClick.bind(this);
 	}
 
-	// Will be triggered when clicked on 'submit' or 'next' or 'play again?' button
-	goNextQuestion(event) {
-		// event.preventDefault();
-		// Only go to next question if it's not the last question
-		if(this.state.questionID !== this.quizLength - 1) {
+	updateScore() {
+		this.setState((prevState) => {
+			return {
+				score: prevState.score + 1
+			}
+		})
+	}
 
-			console.log("Going next")
+
+	// Will be triggered when clicked on 'submit' or 'next' or 'play again?' button
+	goToNextQuestion(event) {
+		// event.preventDefault();
+
+		let selectedAnswer = Number(this.state.selectedAnswer);
+		let correctAnswer = quizData[this.state.questionID].correctAnswer;
+
+		// Only go to next question if it's not the last or 2nd last question
+		if(this.state.questionID < this.quizLength - 2) {
+
 			console.log("Selected ans is ", this.state.selectedAnswer);
 			console.log("Correct ans is ", quizData[this.state.questionID].correctAnswer)
 			
-			let selectedAnswer = Number(this.state.selectedAnswer);
-			let correctAnswer = quizData[this.state.questionID].correctAnswer
-			
 			// update the score if selected answer is equal to correct answer
 			if(selectedAnswer === correctAnswer) {
-				
-				console.log("Score is ", this.state.score);
-				console.log("Qs id is ", this.state.questionID);
-				
-				this.setState((prevState) => {
-					return {
-						score: prevState.score + 1,
-						questionID: prevState.questionID + 1,
-						// change selectedAnswer to -1 again
-						// selectedAnswer: -1 
-					}
-				})
-			} else {
-				this.setState((prevState) => {
-					return {
-						questionID: prevState.questionID + 1,
-						// selectedAnswer: -1
-					}
-				})
+				this.updateScore()
 			}
+
+			// go to next question and refresh states
+			// console.log(this	)
+			this.setState((prevState) => {
+				return {
+					questionID: prevState.questionID + 1,
+					selectedAnswer: -1
+				}
+			})
+		}
+		
+		// On 2nd last question's "Next" button event, set onLastQuestion to true
+		else if(this.state.questionID === this.quizLength - 2) {
+			// We'll be On Last question
+			this.setState({
+				onLastQuestion: true
+			})
+			// go to next question and refresh states
+			this.setState((prevState) => {
+				return {
+					questionID: prevState.questionID + 1,
+					selectedAnswer: -1
+				}
+			})
 		}
 
-		// else if it's last question, have a diff on submit event 
-		// and remove events on clicking button
-		else if(this.state.questionID === this.quizLength - 1) {
+		//If we're on last question, have a diff on Submit event 
+		// else if(this.state.questionID === this.quizLength - 1) {
 
-			let selectedAnswer = Number(this.state.selectedAnswer);
-			let correctAnswer = quizData[this.state.questionID].correctAnswer
-			
-			// update the score if selected answer is equal to correct answer
+		// 	// update the score if selected answer === correct answer
+		// 	if(selectedAnswer === correctAnswer) {
+		// 		this.updateScore();			
+		// 	}
+
+		// 	// Update willSubmit to true here
+		// 	this.setState({
+		// 		willSubmit: true
+		// 	})
+
+		// 	// console.log("Final score is ", this.state.score);
+		// }
+		else if(this.state.onLastQuestion) {
+
+			// update the score if selected answer === correct answer
 			if(selectedAnswer === correctAnswer) {
-				
-				console.log("Score is ", this.state.score);
-				console.log("Qs id is ", this.state.questionID);
-				
-				this.setState((prevState) => {
-					return {
-						score: prevState.score + 1
-					}
-				})
+				this.updateScore();			
 			}
 
-			console.log("Final score is ", this.state.score);
+			// Update willSubmit to true here
+			this.setState({
+				willSubmit: true
+			})
+
+			// console.log("Final score is ", this.state.score);
 		}
 	}
 
@@ -103,54 +128,77 @@ class App extends React.Component {
 	}
 
 	render() {
-		let questionID = this.state.questionID;
-		console.log(this.state);
-		console.log("Selected ans is ", this.state.selectedAnswer);
-		console.log("Correct ans is ", quizData[this.state.questionID].correctAnswer)
-		return(
-			<div>
-				<h2> {quizData[questionID].question} </h2>
 
-					{
-						// render 4 answers of the current question
-						quizData[questionID].answerOptions.map((answer, key) => {
-							return (
-								<DisplayAnswers 
-									key={key} 
-									answerValue={answer}
-									value={answer}
-									onClick={this.handleAnswerClick.bind(this)}
-									id={key}
-								/>
-							)
-						})
+		if(this.state.willSubmit) {
+			return (
+				<h2>The score is { this.state.score }</h2>
+			)
+		}
+		
+		else if(quizData[this.state.questionID]) {
+			// If they are not seeing "Submit" button, display the Quiz questions
+			let questionID = this.state.questionID;
+			let currentQuestion = quizData[questionID]
+
+			console.log(this.state);
+			console.log("Selected ans is ", this.state.selectedAnswer);
+			console.log("Correct ans is ", quizData[this.state.questionID].correctAnswer)
+			console.log("State of onLastQs", this.state.onLastQuestion)
+
+			return(
+				<div>
+					<h2> {currentQuestion.id}. {currentQuestion.question} </h2>
+
+						{
+							// render 4 answers of the current question
+							currentQuestion.answerOptions.map((answer, key) => {
+								return (
+									<DisplayAnswers 
+										key={key} 
+										answerValue={answer}
+										value={answer}
+										onClick={this.handleAnswerClick.bind(this)}
+										id={key}
+										ref={this.answerButtonRef}
+									/>
+								)
+							})
+						}
+					
+					{	// if we're on last question, display "Submit" button
+						this.state.onLastQuestion ? 
+							(<button onClick={this.goToNextQuestion}>Submit!</button>)
+							: (<button onClick={this.goToNextQuestion}>Next</button>)
 					}
-
-				<button onClick={this.goNextQuestion}>Next</button>
-			</div>
-
-			// keep below line to add similar styles, in case
-			/* <div>
-				<div className="grid">
-				<div id="quiz">
-					<h1>Quiz</h1>
-					<hr style={{marginTop: "20px"}} />
-					
-					<p id="question">What is the blah blah blah?</p>
-
-					<Answers />
-					
+						
 				</div>
 
-				<hr style={{marginTop: "50px"}}/>
-				
-				<footer>
-					<p id="progress">Question x of y.</p>
-				</footer>
+				// keep below line to add similar styles, in case
+				/* <div>
+					<div className="grid">
+					<div id="quiz">
+						<h1>Quiz</h1>
+						<hr style={{marginTop: "20px"}} />
+						
+						<p id="question">What is the blah blah blah?</p>
 
-				</div>    
-			</div> */
-		)
+						<Answers />
+						
+					</div>
+
+					<hr style={{marginTop: "50px"}}/>
+					
+					<footer>
+						<p id="progress">Question x of y.</p>
+					</footer>
+
+					</div>    
+				</div> */
+			)
+		}
+		else {
+			return(<h2>The score is { this.state.score }</h2>)
+		}
 	}
 }
 
