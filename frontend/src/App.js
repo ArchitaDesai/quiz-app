@@ -1,23 +1,15 @@
 import React from 'react';
 
-// import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
-// import '../node_modules/bootstrap/dist/js/bootstrap'
 import './App.css';
 
 import DisplayAnswers from './components/DisplayAnswers';
 
-// import TimerMachine from 'react-timer-machine';
-// import moment from 'moment';
-// import momentDurationFormatSetup from 'moment-duration-format';
 
 import quizData from './api/quizData';
+import Timer from './components/Timer';
 
-// momentDurationFormatSetup(moment);
 
 class App extends React.Component {
-
-
-	// answerButtonRef = React.forwardRef();
 
 	constructor() {
 		super();
@@ -34,6 +26,7 @@ class App extends React.Component {
 
 		this.goToNextQuestion = this.goToNextQuestion.bind(this);
 		this.handleAnswerClick = this.handleAnswerClick.bind(this);
+		this.updateScore = this.updateScore.bind(this);
 	}
 
 	updateScore() {
@@ -43,7 +36,6 @@ class App extends React.Component {
 			}
 		})
 	}
-
 
 	// Will be triggered when clicked on 'submit' or 'next' or 'play again?' button
 	goToNextQuestion(event) {
@@ -88,21 +80,6 @@ class App extends React.Component {
 			})
 		}
 
-		//If we're on last question, have a diff on Submit event 
-		// else if(this.state.questionID === this.quizLength - 1) {
-
-		// 	// update the score if selected answer === correct answer
-		// 	if(selectedAnswer === correctAnswer) {
-		// 		this.updateScore();			
-		// 	}
-
-		// 	// Update willSubmit to true here
-		// 	this.setState({
-		// 		willSubmit: true
-		// 	})
-
-		// 	// console.log("Final score is ", this.state.score);
-		// }
 		else if(this.state.onLastQuestion) {
 
 			// update the score if selected answer === correct answer
@@ -147,6 +124,10 @@ class App extends React.Component {
 
 			return(
 				<div>
+					<Timer  
+						time={currentQuestion.timer}
+						timerCompleted={this.goToNextQuestion}
+						/>
 					<h2> {currentQuestion.id}. {currentQuestion.question} </h2>
 
 						{
@@ -159,7 +140,7 @@ class App extends React.Component {
 										value={answer}
 										onClick={this.handleAnswerClick.bind(this)}
 										id={key}
-										ref={this.answerButtonRef}
+										// checked={defaultChecked === }
 									/>
 								)
 							})
