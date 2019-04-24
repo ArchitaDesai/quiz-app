@@ -14,7 +14,7 @@ body {
 
 .grid h1 {
     font-family: sans-serif;
-    background-color: rgb(87,99,110);
+    background-color: rgb(97,90,200);
     font-size: 60px;
     text-align: center;
     color: rgb(255,255,255);
@@ -24,10 +24,10 @@ body {
 
 .grid #question {
     font-size: 30px;
-    color: rgb(90,103,114);
+    color: rgb(97,90,200);
 }
 
-.buttons {
+/* .buttons {
     margin-top: 30px;
     margin: 0 20%;
 }
@@ -41,7 +41,7 @@ body {
     border-radius: 50px;
     margin: 10px 50px 10px 0px;
     padding: 10px 10px;
-}
+} */
 
 #progress {
     color: rgb(43,43,43);
