@@ -4,7 +4,6 @@ import './App.css';
 
 import DisplayAnswers from './components/DisplayAnswers';
 
-
 import quizData from './api/quizData';
 import Timer from './components/Timer';
 
@@ -19,7 +18,8 @@ class App extends React.Component {
 			selectedAnswer: -1, 		// no answer's selected initially
 			score: 0,					// no score initially
 			onLastQuestion: false, 		// if it's true then we're on last question
-			willSubmit: false
+			willSubmit: false,
+			timerStarted: false
 		};
 		
 		this.quizLength = quizData.length
@@ -27,6 +27,14 @@ class App extends React.Component {
 		this.goToNextQuestion = this.goToNextQuestion.bind(this);
 		this.handleAnswerClick = this.handleAnswerClick.bind(this);
 		this.updateScore = this.updateScore.bind(this);
+		
+		// this.handleFormSubmit = this.handleFormSubmit.bind(this)
+	}
+
+	componentDidMount() {
+		this.setState({
+			timerStarted: true
+		})
 	}
 
 	updateScore() {
@@ -39,8 +47,11 @@ class App extends React.Component {
 
 	// Will be triggered when clicked on 'submit' or 'next' or 'play again?' button
 	goToNextQuestion(event) {
-		// event.preventDefault();
 
+		event.preventDefault();
+
+		// console.log("Event target ", event.target)
+		
 		let selectedAnswer = Number(this.state.selectedAnswer);
 		let correctAnswer = quizData[this.state.questionID].correctAnswer;
 
@@ -60,9 +71,11 @@ class App extends React.Component {
 			this.setState((prevState) => {
 				return {
 					questionID: prevState.questionID + 1,
-					selectedAnswer: -1
+					selectedAnswer: -1,
+					timerStarted: false
 				}
 			})
+			
 		}
 		
 		// On 2nd last question's "Next" button event, set onLastQuestion to true
@@ -71,6 +84,10 @@ class App extends React.Component {
 			this.setState({
 				onLastQuestion: true
 			})
+			// update the score if selected answer is equal to correct answer
+			if(selectedAnswer === correctAnswer) {
+				this.updateScore()
+			}
 			// go to next question and refresh states
 			this.setState((prevState) => {
 				return {
@@ -81,7 +98,6 @@ class App extends React.Component {
 		}
 
 		else if(this.state.onLastQuestion) {
-
 			// update the score if selected answer === correct answer
 			if(selectedAnswer === correctAnswer) {
 				this.updateScore();			
@@ -94,6 +110,13 @@ class App extends React.Component {
 
 			// console.log("Final score is ", this.state.score);
 		}
+		
+		// Uncheck radio button if checked when moving to next question
+		let radioElements = document.querySelectorAll('.radioClass')
+		let i;
+		for(i=0; i<radioElements.length; i++){
+			radioElements[i].checked = false
+		}
 	}
 
 
@@ -105,6 +128,11 @@ class App extends React.Component {
 	}
 
 	render() {
+
+		// if(this.refs !== undefined){
+		// 	console.log("Ref is : ", this.refs)
+		// }
+			
 
 		if(this.state.willSubmit) {
 			return (
@@ -122,14 +150,17 @@ class App extends React.Component {
 			console.log("Correct ans is ", quizData[this.state.questionID].correctAnswer)
 			console.log("State of onLastQs", this.state.onLastQuestion)
 
-			return(
-				<div>
-					<Timer  
-						time={currentQuestion.timer}
-						timerCompleted={this.goToNextQuestion}
-						/>
-					<h2> {currentQuestion.id}. {currentQuestion.question} </h2>
+			console.log("Timer started in render ", this.state.timerStarted)
 
+			return(
+				<div className="container grid">
+					<Timer
+						maxTime={currentQuestion.timer}
+						timerStarted={this.state.timerStarted}
+					/>
+					<h1>Quiz</h1>
+					<h2 id="question"> {currentQuestion.id + 1}. {currentQuestion.question} </h2>
+					
 						{
 							// render 4 answers of the current question
 							currentQuestion.answerOptions.map((answer, key) => {
@@ -140,17 +171,28 @@ class App extends React.Component {
 										value={answer}
 										onClick={this.handleAnswerClick.bind(this)}
 										id={key}
+										className="radioClass"
+										// ref={'ref_' + answer}
 										// checked={defaultChecked === }
 									/>
 								)
 							})
 						}
+						
 					
-					{	// if we're on last question, display "Submit" button
-						this.state.onLastQuestion ? 
-							(<button onClick={this.goToNextQuestion}>Submit!</button>)
-							: (<button onClick={this.goToNextQuestion}>Next</button>)
-					}
+						{	// if we're on last question, display "Submit" button
+							this.state.onLastQuestion ? 
+								(<button  
+									className="buttons"
+									className="btn btn-outline-primary btn-lg btn-block"
+									onClick={this.goToNextQuestion}
+									>Submit!</button>)
+								: (<button 
+									className="buttons"
+									className="btn btn-outline-primary btn-lg btn-block"
+									onClick={this.goToNextQuestion}
+									>Next</button>)
+						}
 						
 				</div>
 
@@ -175,6 +217,7 @@ class App extends React.Component {
 
 					</div>    
 				</div> */
+				
 			)
 		}
 		else {

@@ -10,10 +10,13 @@ function DisplayAnswers(props) {
                     value={props.value}
                     onClick={props.onClick}
                     id={props.id}
+                    ref={props.ref}
+                    className={props.className}
                 /> 
                 
                 { props.answerValue }
             </label>
+            
             <br />
         </span>
     )
