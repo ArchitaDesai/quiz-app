@@ -1,5 +1,6 @@
 body {
     background-color: rgb(238,238,238);
+    font-family: 'Lato', sans-serif;
 }
 
 .grid {
@@ -20,11 +21,18 @@ body {
     color: rgb(255,255,255);
     padding: 2px 0px;
     border-radius: 50px;
+    margin-bottom: 20px;
 }
 
 .grid #question {
     font-size: 30px;
     color: rgb(97,90,200);
+    margin-bottom: 14px;
+}
+
+.buttons {
+    margin-top: 35px;
+
 }
 
 /* .buttons {
@@ -43,13 +51,13 @@ body {
     padding: 10px 10px;
 } */
 
-#progress {
+/* #progress {
     color: rgb(43,43,43);
     font-size: 18px;
 
-}
+} */
 
-#btn0:hover, #btn1:hover, #btn2:hover, #btn3:hover {
+/* #btn0:hover, #btn1:hover, #btn2:hover, #btn3:hover {
     cursor: pointer;
     background-color: rgb(87,99,110);
 }
@@ -57,4 +65,4 @@ body {
 #btn0:focus, #btn1:focus, #btn2:focus, #btn3:focus {
     outline: 0;
 }
-
+ */
