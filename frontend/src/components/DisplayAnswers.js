@@ -1,9 +1,11 @@
 import React from 'react'
 
+import './DisplayAnswers.css'
+
 function DisplayAnswers(props) {
     return(
         <span>
-            <label>
+            <label className="answerOptions">
                 <input 
                     type="radio" 
                     name="answers" 
@@ -14,7 +16,9 @@ function DisplayAnswers(props) {
                     className={props.className}
                 /> 
                 
-                { props.answerValue }
+                <span className="answerText">
+                    { props.answerValue }
+                </span>
             </label>
             
             <br />

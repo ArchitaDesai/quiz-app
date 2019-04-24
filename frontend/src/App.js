@@ -7,6 +7,7 @@ import DisplayAnswers from './components/DisplayAnswers';
 import quizData from './api/quizData';
 import Timer from './components/Timer';
 
+import DisplayResult from './components/DisplayResult';
 
 class App extends React.Component {
 
@@ -48,7 +49,7 @@ class App extends React.Component {
 	// Will be triggered when clicked on 'submit' or 'next' or 'play again?' button
 	goToNextQuestion(event) {
 
-		event.preventDefault();
+		// event.preventDefault();
 
 		// console.log("Event target ", event.target)
 		
@@ -136,7 +137,7 @@ class App extends React.Component {
 
 		if(this.state.willSubmit) {
 			return (
-				<h2>The score is { this.state.score }</h2>
+				<DisplayResult score={this.state.score} />
 			)
 		}
 		
@@ -156,7 +157,9 @@ class App extends React.Component {
 				<div className="container grid">
 					<Timer
 						maxTime={currentQuestion.timer}
+						questionID={currentQuestion.id}
 						timerStarted={this.state.timerStarted}
+						onTimerEnd={this.goToNextQuestion}
 					/>
 					<h1>Quiz</h1>
 					<h2 id="question"> {currentQuestion.id + 1}. {currentQuestion.question} </h2>
@@ -183,13 +186,11 @@ class App extends React.Component {
 						{	// if we're on last question, display "Submit" button
 							this.state.onLastQuestion ? 
 								(<button  
-									className="buttons"
-									className="btn btn-outline-primary btn-lg btn-block"
+									className="buttons btn btn-outline-primary btn-lg btn-block"
 									onClick={this.goToNextQuestion}
 									>Submit!</button>)
 								: (<button 
-									className="buttons"
-									className="btn btn-outline-primary btn-lg btn-block"
+									className="buttons btn btn-outline-primary btn-lg btn-block"
 									onClick={this.goToNextQuestion}
 									>Next</button>)
 						}
@@ -221,7 +222,9 @@ class App extends React.Component {
 			)
 		}
 		else {
-			return(<h2>The score is { this.state.score }</h2>)
+			return(
+				<DisplayResult score={this.state.score} />
+			)
 		}
 	}
 }
