@@ -8,7 +8,10 @@ import momentDurationFormatSetup from 'moment-duration-format';
 momentDurationFormatSetup(moment);
 
 class Timer extends React.Component {
-    
+
+      // Flag to check if the component is mounted or not
+	    _isMounted = false
+
       constructor(props) {
         super(props);
         this.state = {
@@ -22,6 +25,8 @@ class Timer extends React.Component {
     
       // Will start running timer as soon as quiz app loads
       componentDidMount() {
+        this._isMounted = true
+
         console.log("componentDidMount");
         let maxTime = this.props.maxTime
         let timeIndex = maxTime
@@ -41,10 +46,16 @@ class Timer extends React.Component {
           // Set a new timer from beginning for a new Qs
           let maxTime = this.props.maxTime
           let timeIndex = maxTime
-          this.setState({
-            maxTime: nextProps.maxTime
-          },this.timerLoop(maxTime, timeIndex));
+    		  if(this._isMounted) {      
+            this.setState({
+              maxTime: nextProps.maxTime
+            },this.timerLoop(maxTime, timeIndex));
+          }
         }
+      }
+    
+      componentWillUnmount() {
+        this._isMounted = false
       }
 
     timerLoop (maxTime, timeIndex) {
@@ -55,27 +66,27 @@ class Timer extends React.Component {
         let self = this
         // let timeIndex = this.maxTime
         this.timer = setTimeout(function () {
+          if(self._isMounted) {
             self.setState({
-              time:timeIndex
-            }, () => {
-              timeIndex--;
-              if(self.timerLoop instanceof Function && timeIndex > 0){
-                self.timerLoop(maxTime, timeIndex);                             
-              }
-              else if(timeIndex<=1) {
-                console.log("typeof self.props.onTimerEnd", typeof self.props.onTimerEnd)
-                if(typeof self.props.onTimerEnd==="function" ){ 
-                  self.props.onTimerEnd();
-                  console.log("ONTIMERND", self.props.onTimerEnd)
+                time:timeIndex
+              }, () => {
+                timeIndex--;
+                if(self.timerLoop instanceof Function && timeIndex > 0){
+                  self.timerLoop(maxTime, timeIndex);                             
                 }
-              }
-            })
-            
+                else if(timeIndex<=1) {
+                  console.log("typeof self.props.onTimerEnd", typeof self.props.onTimerEnd)
+                  if(typeof self.props.onTimerEnd==="function" ){ 
+                    self.props.onTimerEnd();
+                    console.log("ONTIMERND", self.props.onTimerEnd)
+                  }
+                }
+              })
+          }
         }, 1000)
       }
       
       render() {
-        
         console.log("Current Time ", this.state.time)
         return (
           <div>

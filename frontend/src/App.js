@@ -11,6 +11,9 @@ import DisplayResult from './components/DisplayResult';
 
 class App extends React.Component {
 
+	// Flag to check if the component is mounted or not
+	_isMounted = false
+
 	constructor() {
 		super();
 		
@@ -33,17 +36,27 @@ class App extends React.Component {
 	}
 
 	componentDidMount() {
-		this.setState({
-			timerStarted: true
-		})
+		this._isMounted = true
+		if(this._isMounted) {
+			this.setState({
+				timerStarted: true
+			})
+		}
+	}
+
+
+	componentWillUnmount() {
+		this._isMounted = false
 	}
 
 	updateScore() {
-		this.setState((prevState) => {
-			return {
-				score: prevState.score + 1
-			}
-		})
+		if(this._isMounted) {
+			this.setState((prevState) => {
+				return {
+					score: prevState.score + 1
+				}
+			})
+		}
 	}
 
 	// Will be triggered when clicked on 'submit' or 'next' or 'play again?' button
@@ -69,33 +82,38 @@ class App extends React.Component {
 
 			// go to next question and refresh states
 			// console.log(this	)
-			this.setState((prevState) => {
-				return {
-					questionID: prevState.questionID + 1,
-					selectedAnswer: -1,
-					timerStarted: false
-				}
-			})
-			
+			if(this._isMounted) {
+				this.setState((prevState) => {
+					return {
+						questionID: prevState.questionID + 1,
+						selectedAnswer: -1,
+						timerStarted: false
+					}
+				})
+			}
 		}
 		
 		// On 2nd last question's "Next" button event, set onLastQuestion to true
 		else if(this.state.questionID === this.quizLength - 2) {
 			// We'll be On Last question
-			this.setState({
-				onLastQuestion: true
-			})
+			if(this._isMounted) {
+				this.setState({
+					onLastQuestion: true
+				})
+			}
 			// update the score if selected answer is equal to correct answer
 			if(selectedAnswer === correctAnswer) {
 				this.updateScore()
 			}
 			// go to next question and refresh states
-			this.setState((prevState) => {
-				return {
-					questionID: prevState.questionID + 1,
-					selectedAnswer: -1
-				}
-			})
+			if(this._isMounted) {
+				this.setState((prevState) => {
+					return {
+						questionID: prevState.questionID + 1,
+						selectedAnswer: -1
+					}
+				})
+			}
 		}
 
 		else if(this.state.onLastQuestion) {
@@ -105,9 +123,11 @@ class App extends React.Component {
 			}
 
 			// Update willSubmit to true here
-			this.setState({
-				willSubmit: true
-			})
+			if(this._isMounted) {
+				this.setState({
+					willSubmit: true
+				})
+			}
 
 			// console.log("Final score is ", this.state.score);
 		}
@@ -123,9 +143,11 @@ class App extends React.Component {
 
 	handleAnswerClick(event) {
 		// event.target.id will have the value of selected answer 
-		this.setState({
-			selectedAnswer: event.target.id
-		})
+		if(this._isMounted) {
+			this.setState({
+				selectedAnswer: event.target.id
+			})
+		}
 	}
 
 	render() {
